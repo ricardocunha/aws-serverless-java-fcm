@@ -12,7 +12,11 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class AndroidPushNotificationsService {
 
-    private static final String FIREBASE_SERVER_KEY = "AIzaSyD6gnMRizBEHx_hfa6hKXe-Hv7WhDEZVQc";
+    private String FirebaseServerKey = null;
+    
+    public AndroidPushNotificationsService(){
+    	this.FirebaseServerKey = System.getProperty("FIREBASE_SERVER_KEY");
+    }
 
     @Async
     public CompletableFuture<FirebaseResponse> send(HttpEntity<String> entity) {
@@ -20,7 +24,7 @@ public class AndroidPushNotificationsService {
         RestTemplate restTemplate = new RestTemplate();
 
         ArrayList<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
-        interceptors.add(new HeaderRequestInterceptor("Authorization", "key=" + FIREBASE_SERVER_KEY));
+        interceptors.add(new HeaderRequestInterceptor("Authorization", "key=" + this.FirebaseServerKey));
         interceptors.add(new HeaderRequestInterceptor("Content-Type", "application/json"));
         restTemplate.setInterceptors(interceptors);
 
